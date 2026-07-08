@@ -13,9 +13,11 @@ class ServiceProvider extends AddonServiceProvider
         'actions' => __DIR__ . '/../routes/actions.php',
     ];
 
-    protected $scripts = [
-        __DIR__ . '/../public/js/addon.js',
-        __DIR__ . '/../public/js/utils.js',
+    protected $vite = [
+        'input' => [
+            'resources/js/addon.js',
+        ],
+        'publicDirectory' => 'resources/dist',
     ];
 
     protected $publishables = [
