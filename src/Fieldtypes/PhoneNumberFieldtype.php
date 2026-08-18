@@ -5,6 +5,7 @@ namespace Kadegray\StatamicPhoneNumberFieldtype\Fieldtypes;
 use Illuminate\Support\Facades\App;
 use Statamic\Fields\Fieldtype;
 use Sokil\IsoCodes\IsoCodesFactory;
+use Sokil\IsoCodes\TranslationDriver\SymfonyTranslationDriver;
 
 class PhoneNumberFieldtype extends Fieldtype
 {
@@ -89,13 +90,11 @@ class PhoneNumberFieldtype extends Fieldtype
 
     private function getCountryCodes()
     {
-        $locale = App::getLocale();
-        putenv("LANGUAGE=$locale.UTF-8");
-        putenv("LC_ALL=$locale.UTF-8");
-        setlocale(LC_ALL, "$locale.UTF-8");
+        $translationDriver = new SymfonyTranslationDriver();
+        $translationDriver->setLocale(App::getLocale());
 
         $countries = [];
-        $isoCodes = new IsoCodesFactory();
+        $isoCodes = new IsoCodesFactory(null, $translationDriver);
         foreach ($isoCodes->getCountries() as $country) {
             $countries[$country->getAlpha2()] = "{$country->getLocalName()} ({$country->getAlpha2()})";
         }

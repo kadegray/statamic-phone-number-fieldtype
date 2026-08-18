@@ -31,6 +31,7 @@
     "sokil/php-isocodes": "^4.1",
     "sokil/php-isocodes-db-i18n": "^4.0",
     "giggsey/libphonenumber-for-php": "^8.13",
-    "statamic/cms": "^6.0"
+    "statamic/cms": "^6.0",
+    "symfony/translation": "^6.4|^7.0|^8.0"
   }
 }

@@ -3,20 +3,18 @@
 namespace Kadegray\StatamicPhoneNumberFieldtype\Controllers;
 
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Support\Facades\App;
 use Sokil\IsoCodes\IsoCodesFactory;
+use Sokil\IsoCodes\TranslationDriver\SymfonyTranslationDriver;
 
 class PhoneNumberFieldtypeController extends BaseController
 {
     public function getCountries($lang)
     {
-        $locale = App::getLocale();
-        putenv("LANGUAGE=$locale.UTF-8");
-        putenv("LC_ALL=$locale.UTF-8");
-        setlocale(LC_ALL, "$locale.UTF-8");
+        $translationDriver = new SymfonyTranslationDriver();
+        $translationDriver->setLocale($lang);
 
         $countries = [];
-        $isoCodes = new IsoCodesFactory();
+        $isoCodes = new IsoCodesFactory(null, $translationDriver);
         foreach ($isoCodes->getCountries() as $country) {
             $countries[strtolower($country->getAlpha2())] = $country->getLocalName();
         }
