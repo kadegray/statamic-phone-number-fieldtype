@@ -2,7 +2,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build"
+    "build": "vite build && mkdir -p public/js && cp node_modules/intl-tel-input/build/js/utils.js public/js/utils.js"
   },
   "dependencies": {
     "@statamic/cms": "file:./vendor/statamic/cms/resources/dist-package",

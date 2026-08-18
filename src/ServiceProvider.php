@@ -22,6 +22,7 @@ class ServiceProvider extends AddonServiceProvider
 
     protected $publishables = [
         __DIR__ . '/../public/images' => 'images',
+        __DIR__ . '/../public/js' => 'js',
     ];
 
     protected $modifiers = [

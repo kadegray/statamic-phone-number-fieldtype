@@ -4,7 +4,8 @@ import { Fieldtype } from '@statamic/cms';
 import { Input } from '@statamic/cms/ui';
 import 'intl-tel-input/build/css/intlTelInput.css';
 import intlTelInput from 'intl-tel-input';
-import 'intl-tel-input/build/js/utils.js';
+
+const utilsScriptUrl = '/vendor/statamic-phone-number-fieldtype/js/utils.js';
 
 const emit = defineEmits(Fieldtype.emits);
 const props = defineProps(Fieldtype.props);
@@ -65,6 +66,7 @@ onMounted(async () => {
         onlyCountries: props.config.only_countries ?? [],
         preferredCountries: props.config.preferred_countries ?? ['us', 'gb'],
         localizedCountries: localizedCountries,
+        utilsScript: utilsScriptUrl,
     });
 });
 
