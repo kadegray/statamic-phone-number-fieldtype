@@ -2,13 +2,15 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && mkdir -p public/js && cp node_modules/intl-tel-input/build/js/utils.js public/js/utils.js"
+    "build": "vite build && mkdir -p public/js && cp node_modules/intl-tel-input/build/js/utils.js public/js/utils.js",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@statamic/cms": "file:./vendor/statamic/cms/resources/dist-package",
     "intl-tel-input": "^17.0.21"
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.1",
     "laravel-vite-plugin": "^2.0.0",
     "vite": "^7.0.0"
   }

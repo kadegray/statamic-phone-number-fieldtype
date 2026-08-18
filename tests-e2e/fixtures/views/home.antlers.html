@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html>
+<head><title>{{ title }}</title></head>
+<body>
+    <div id="phone-raw">{{ phone_number }}</div>
+    <div id="phone-national">{{ phone_number | e164_to_national }}</div>
+    <div id="phone-international">{{ phone_number | e164_to_international }}</div>
+</body>
+</html>

@@ -1,0 +1,13 @@
+title: Page
+sections:
+  main:
+    display: Main
+    fields:
+      - handle: title
+        field:
+          type: text
+          required: true
+      - handle: phone_number
+        field:
+          type: phone_number
+          display: 'Phone Number'

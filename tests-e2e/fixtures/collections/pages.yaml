@@ -1,0 +1,4 @@
+title: Pages
+route: '{slug}'
+template: home
+layout: false
