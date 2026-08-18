@@ -1,13 +1,15 @@
 {
+  "type": "module",
   "scripts": {
-    "watch": "mix watch && php /Users/kadegray/Sites/ibexel/statamic-phone-number-fieldtype/artisan vendor:publish --tag=statamic-phone-number-fieldtype --force",
-    "build": "mix"
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@statamic/cms": "file:./vendor/statamic/cms/resources/dist-package",
+    "intl-tel-input": "^17.0.21"
   },
   "devDependencies": {
-    "intl-tel-input": "^17.0.21",
-    "laravel-mix": "^6.0.48",
-    "vue": "^2.6.11",
-    "vue-loader": "^15.9.8",
-    "vue-template-compiler": "^2.6.14"
+    "laravel-vite-plugin": "^2.0.0",
+    "vite": "^7.0.0"
   }
 }

@@ -27,12 +27,10 @@
       "pixelfear/composer-dist-plugin": true
     }
   },
-  "require-dev": {
-    "statamic/cms": "^3.3"
-  },
   "require": {
     "sokil/php-isocodes": "^4.1",
     "sokil/php-isocodes-db-i18n": "^4.0",
-    "giggsey/libphonenumber-for-php": "^8.13"
+    "giggsey/libphonenumber-for-php": "^8.13",
+    "statamic/cms": "^6.0"
   }
 }
