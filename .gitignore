@@ -2,3 +2,5 @@ node_modules
 /vendor
 mix-manifest.json
 composer.lock
+.phpunit.cache
+tests/__fixtures__

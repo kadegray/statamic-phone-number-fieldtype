@@ -11,6 +11,11 @@
       "Kadegray\\StatamicPhoneNumberFieldtype\\": "src"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "Kadegray\\StatamicPhoneNumberFieldtype\\Tests\\": "tests"
+    }
+  },
   "extra": {
     "statamic": {
       "name": "Statamic Phone Number Fieldtype",
@@ -33,5 +38,9 @@
     "giggsey/libphonenumber-for-php": "^8.13",
     "statamic/cms": "^6.0",
     "symfony/translation": "^6.4|^7.0|^8.0"
+  },
+  "require-dev": {
+    "orchestra/testbench": "^11.0",
+    "phpunit/phpunit": "^11.0"
   }
 }
