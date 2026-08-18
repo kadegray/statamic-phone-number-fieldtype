@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 2.0.0 (2026-08-17)
 
 Migrates the Control Panel fieldtype to Statamic 6, which was completely broken before this branch — the CP would show "Component phone_number-fieldtype does not exist" for any blueprint using the field, because the compiled bundle referenced a bare global `Fieldtype` mixin and other Vue 2-era APIs that no longer exist in Statamic 6's Vue 3 Control Panel.
 
