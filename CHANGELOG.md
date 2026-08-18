@@ -1,0 +1,34 @@
+# Changelog
+
+## 1.0.3 (2023-05-20)
+
+README-only release, no code changes. Reworded the features list into bold-labeled bullet points (e.g. "**E164 Format**: ...") instead of plain sentences, and rewrote several usage-example paragraphs (fieldtype configuration, modifier examples) for clarity.
+
+## 1.0.2 (2023-05-20)
+
+Fixed a bug where a phone number typed into the field never actually made it into the saved entry.
+
+The field's `mounted()` hook always configured `intl-tel-input` with `utilsScript: '/vendor/statamic-phone-number-fieldtype/js/utils.js'`, telling it to lazy-load its validation library from that URL the first time it's needed. `public/js/utils.js` existed in the package since 1.0.0, but was never added to the addon's `$scripts` in `ServiceProvider.php` — only `addon.js` was. Since `$scripts` is what Statamic actually publishes to `public/vendor/{addon}/js/...` on install, `utils.js` was never copied to that URL on a real site, so the lazy fetch 404'd and the global `intlTelInputUtils` was never defined.
+
+The field's `inputEvent()` handler unconditionally referenced `intlTelInputUtils.validationError.*` on every keystroke, so with the global undefined this threw a `ReferenceError` before either of the handler's two `this.$emit('input', ...)` calls could run — meaning the input's `v-model` binding never updated and the typed value never reached the publish form's save payload. The field would happily accept keystrokes and *look* filled in, but nothing was ever wired back to Statamic.
+
+Fixed by adding `public/js/utils.js` to `$scripts` alongside `addon.js`, so it's published to the expected path (and, as a side effect, is now loaded eagerly rather than the originally-intended lazy fetch).
+
+## 1.0.1 (2023-04-02)
+
+Fixed missing country flag icons in the country-select dropdown. The compiled bundle's CSS pulled the flag sprite images from `node_modules/intl-tel-input/build/img/` via webpack's asset pipeline (`__webpack_require__` on the `.png` files), but the emitted image files themselves were never committed alongside `public/js/addon.js` in 1.0.0 — only the JS/CSS were checked in, not whatever webpack emitted for the image imports. Fixed by committing the flag sprites directly as `public/images/vendor/intl-tel-input/build/flags.png` and `flags@2x.png` (for high-DPI/retina displays), published via the addon's existing `$publishables` mapping (`public/images` → `images`) so they land at a stable URL on install.
+
+Also:
+- Fixed `.gitignore` incorrectly ignoring a `vendor` directory anywhere in the repo tree instead of just the addon's own root-level one (`vendor` → `/vendor`).
+- Added markdown hard line-breaks (trailing double-spaces) after each example phone number in the README so the international/national examples render on separate lines instead of running together.
+
+## 1.0.0 (2023-04-02)
+
+Initial release.
+
+- **`PhoneNumberFieldtype`** — an international phone number fieldtype. The Control Panel input is built on [`intl-tel-input`](https://intl-tel-input.com/), giving a country-select dropdown plus a live-formatted phone input; values are normalized and stored in [E164 format](https://www.twilio.com/docs/glossary/what-e164) (e.g. `+12015550123`) regardless of how the user typed it, using `giggsey/libphonenumber-for-php` for parsing/validation.
+- **Fieldtype configuration options**: toggle to show/hide the country select, set an initial country, a preferred-countries list (shown first in the dropdown), an exclude list, and an "only these countries" allow-list. Country names for these config options are sourced from `sokil/php-isocodes`.
+- **`e164_to_national`** and **`e164_to_international`** Antlers modifiers, for rendering a stored E164 value back out in national (`(201) 555-0123`) or international (`+1 201-555-0123`) format.
+- **`PhoneNumberFieldtypeFilter`** — a custom collection-listing filter for the fieldtype (a plain text "contains" search against the stored value).
+- A `{lang}/countries` action route + `PhoneNumberFieldtypeController`, used by the CP component to fetch localized country names when the Control Panel's language isn't English.
+- Initial README with installation and usage docs, plus a follow-up documentation pass adding screenshots of the field in the CP and a tweaked marketplace-listing description in `composer.json`.
