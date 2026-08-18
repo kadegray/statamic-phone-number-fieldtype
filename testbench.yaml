@@ -1,0 +1,16 @@
+laravel: '@testbench'
+
+env:
+  APP_ENV: testing
+
+providers:
+  # - Workbench\App\Providers\WorkbenchServiceProvider
+
+migrations:
+  - workbench/database/migrations
+
+seeders:
+  - Workbench\Database\Seeders\DatabaseSeeder
+
+workbench:
+  install: true
