@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 2.0.1 (2026-08-18)
 
 Adds the addon's first test coverage — previously every bug fixed in 2.0.0 was only caught by manual testing.
 
