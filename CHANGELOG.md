@@ -1,5 +1,17 @@
 # Changelog
 
+## Unreleased
+
+Migrates the Control Panel fieldtype to Statamic 6, which was completely broken before this branch — the CP would show "Component phone_number-fieldtype does not exist" for any blueprint using the field, because the compiled bundle referenced a bare global `Fieldtype` mixin and other Vue 2-era APIs that no longer exist in Statamic 6's Vue 3 Control Panel.
+
+**Breaking**: `composer.json` now requires `statamic/cms: ^6.0`. This version will not install on Statamic 3-5.
+
+- Rebuilt the CP fieldtype component (`resources/js/components/fieldtypes/PhoneNumberFieldtype.vue`) using Vue 3's Composition API: `import { Fieldtype } from '@statamic/cms'` instead of the old bare global, `import { Input } from '@statamic/cms/ui'` for the input itself, and `update(value)` instead of `this.$emit('input', value)` to match the current fieldtype contract.
+- Replaced the Laravel Mix/webpack build with Vite (`vite.config.js`, `@statamic/cms/vite-plugin`, `laravel-vite-plugin`), matching Statamic's current addon tooling. Built assets are committed under `resources/dist/build` so installing the addon doesn't require a Node toolchain.
+- Fixed a fatal error (`Call to undefined method PhoneNumberFieldtypeFilter::isComplete()`) when applying or changing the field's filter in a collection listing. Statamic 6 requires filter classes to implement `isComplete()`; rather than patch the addon's own filter — which only duplicated Statamic's built-in one, minus its operator ("Contains"/"Is"/"Isn't"/etc.) selector — removed the `PhoneNumberFieldtype::filter()` override entirely so it now uses Statamic's own `FieldtypeFilter`.
+- Fixed the `{lang}/countries` route always returning English country names regardless of the requested locale, plus a deeper issue underneath it: `sokil/php-isocodes`'s default gettext-based driver caches translations at the process level, so once one locale's catalog loaded, every later request in that PHP worker kept returning it no matter what locale was actually requested. Switched both `PhoneNumberFieldtypeController::getCountries()` and the fieldtype's config-panel country list to `sokil/php-isocodes`'s `SymfonyTranslationDriver`, which loads translations per-instance instead of through global `setlocale()` state.
+- Cut the JS bundle loaded on *every* Control Panel page from ~292KB (70KB gzipped) to ~42KB (15KB gzipped) by lazy-loading `intl-tel-input`'s validation library (`utils.js`, ~250KB) again, only when a phone number field actually mounts, instead of bundling it directly into the main script.
+
 ## 1.0.3 (2023-05-20)
 
 README-only release, no code changes. Reworded the features list into bold-labeled bullet points (e.g. "**E164 Format**: ...") instead of plain sentences, and rewrote several usage-example paragraphs (fieldtype configuration, modifier examples) for clarity.
