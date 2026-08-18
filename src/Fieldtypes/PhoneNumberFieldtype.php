@@ -3,7 +3,6 @@
 namespace Kadegray\StatamicPhoneNumberFieldtype\Fieldtypes;
 
 use Illuminate\Support\Facades\App;
-use Kadegray\StatamicPhoneNumberFieldtype\FieldtypeFilters\PhoneNumberFieldtypeFilter;
 use Statamic\Fields\Fieldtype;
 use Sokil\IsoCodes\IsoCodesFactory;
 
@@ -40,11 +39,6 @@ class PhoneNumberFieldtype extends Fieldtype
     public function process($data)
     {
         return $data;
-    }
-
-    public function filter()
-    {
-        return new PhoneNumberFieldtypeFilter($this);
     }
 
     protected function configFieldItems(): array
