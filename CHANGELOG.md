@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased
+
+Adds the addon's first test coverage — previously every bug fixed in 2.0.0 was only caught by manual testing.
+
+- **PHPUnit suite** (`tests/`, `vendor/bin/phpunit`): unit/feature tests for the fieldtype, controller, both modifiers, and service provider registration, run via [Orchestra Testbench](https://packages.tools/testbench) and Statamic's `AddonTestCase`. Includes direct regression tests: sequential locale requests within a single test process (catches the gettext caching bug from 2.0.0 if it ever comes back), and a feature test building real entries and running the listing filter end-to-end (catches the `isComplete()` fatal error).
+- **Playwright suite** (`tests-e2e/`, `npm run test:e2e`): end-to-end tests driving a real Control Panel and front end in a browser, against a disposable Statamic site scaffolded inside the repo via Testbench's "workbench" feature (`workbench/`, `testbench.yaml`) rather than depending on an external install. Covers field rendering, the save/reload round-trip, CP locale handling, the listing filter, and front-end modifier rendering.
+- **`TESTING.md`**: documents how to run both suites and what `tests-e2e/setup-workbench.sh` does to get a plain Testbench workbench booting a fully working Statamic site — none of it is default Testbench behavior: seeding Statamic's addon manifest directly (it only recognizes installed dependencies, never the root package being tested), mirroring `composer.lock` into the skeleton for the CP's licensing check, and switching the skeleton to file-based users with Statamic's own `statamic` auth driver (Laravel's default `eloquent` driver silently rejects correct file-based credentials).
+
+Both fixed bugs from 2.0.0 (the listing-filter fatal error and the locale-caching bug) were spot-checked by temporarily reintroducing them and confirming the new tests actually fail, then reverting.
+
 ## 2.0.0 (2026-08-17)
 
 Migrates the Control Panel fieldtype to Statamic 6, which was completely broken before this branch — the CP would show "Component phone_number-fieldtype does not exist" for any blueprint using the field, because the compiled bundle referenced a bare global `Fieldtype` mixin and other Vue 2-era APIs that no longer exist in Statamic 6's Vue 3 Control Panel.
